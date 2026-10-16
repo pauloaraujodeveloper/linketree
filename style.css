@@ -1,0 +1,496 @@
+:root {
+    /* Cinzas azulados */
+    --grafite-900: #0b0f16;
+    --grafite-800: #131a25;
+    --grafite-700: #1c2433;
+
+    /* Azuis */
+    --azul-700: #1e3a8a;
+    --azul-500: #3b82f6;
+    --azul-400: #60a5fa;
+    --azul-200: #bfdbfe;
+
+    /* Texto */
+    --texto: #f3f6fb;
+    --texto-secundario: #aeb8cb;
+    --texto-suave: #7f8aa0;
+
+    /* Superfícies */
+    --cartao: rgba(19, 26, 37, 0.70);
+    --borda: rgba(255, 255, 255, 0.09);
+
+    /* Marcas */
+    --linkedin: #3b82f6;
+    --github: #8b949e;
+    --whatsapp: #25d366;
+
+    --raio-cartao: 28px;
+    --raio-botao: 16px;
+    --curva: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ========================================
+   2. RESET
+======================================== */
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+img {
+    max-width: 100%;
+}
+
+::selection {
+    background: var(--azul-500);
+    color: #ffffff;
+}
+
+/* ========================================
+   3. FUNDO: GRADIENTE CINZA + AZUL
+======================================== */
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 32px 16px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    color: var(--texto);
+    line-height: 1.5;
+
+    background-color: #0f0f13;
+    background-image:
+        radial-gradient(60% 45% at 88% 0%, rgba(239, 68, 68, 0.30) 0%, transparent 70%),
+        radial-gradient(55% 50% at 4% 100%, rgba(153, 27, 27, 0.45) 0%, transparent 70%),
+        linear-gradient(145deg, #0f0f13 0%, #1d1e24 40%, #35272b 70%, #5a1f27 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Malha de pontos bem discreta, some nas bordas */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    background-size: 26px 26px;
+
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, #000 20%, transparent 72%);
+}
+
+/* ========================================
+   4. CARTÃO PRINCIPAL (VIDRO FOSCO)
+======================================== */
+
+.container {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 460px;
+    padding: 42px 26px 24px;
+
+    text-align: center;
+
+    background: var(--cartao);
+    border-radius: var(--raio-cartao);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.50),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+
+    animation: entrar-cartao 0.7s var(--curva) backwards;
+}
+
+/* Borda em degradê: mais clara no topo, azul embaixo */
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: linear-gradient(160deg,
+            rgba(191, 219, 254, 0.50) 0%,
+            rgba(255, 255, 255, 0.06) 35%,
+            rgba(255, 255, 255, 0.03) 65%,
+            rgba(59, 130, 246, 0.40) 100%);
+
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#000 0 0) content-box exclude,
+        linear-gradient(#000 0 0);
+}
+
+/* ========================================
+   5. FOTO DE PERFIL
+======================================== */
+
+.img,
+.avatar {
+    display: block;
+
+    width: 124px;
+    height: 124px;
+    margin: 0 auto 22px;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 50%;
+    border: 3px solid transparent;
+
+    /* anel em degradê */
+    background:
+        linear-gradient(var(--grafite-800), var(--grafite-800)) padding-box,
+        linear-gradient(135deg, var(--azul-200), var(--azul-500) 55%, var(--azul-700)) border-box;
+
+    box-shadow:
+        0 0 0 7px rgba(59, 130, 246, 0.10),
+        0 14px 36px rgba(59, 130, 246, 0.30);
+
+    transition: transform 0.45s var(--curva), box-shadow 0.45s var(--curva);
+}
+
+/* ========================================
+   6. NOME, PROFISSÃO E DESCRIÇÃO
+======================================== */
+
+.container h1 {
+    margin-bottom: 12px;
+
+    font-size: clamp(1.75rem, 6vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+}
+
+.profissao {
+    display: inline-block;
+    margin-bottom: 14px;
+    padding: 6px 14px;
+
+    color: var(--azul-200);
+    font-size: 0.8125rem;
+    font-weight: 600;
+
+    background: rgba(59, 130, 246, 0.14);
+    border: 1px solid rgba(96, 165, 250, 0.28);
+    border-radius: 999px;
+}
+
+.descricao {
+    max-width: 32ch;
+    margin: 0 auto 32px;
+
+    color: var(--texto-secundario);
+    font-size: 0.925rem;
+    line-height: 1.7;
+}
+
+/* ========================================
+   7. LISTA DE LINKS
+======================================== */
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ========================================
+   8. BOTÕES
+======================================== */
+
+.botao {
+    --cor: var(--azul-500);
+    --x: 50%;
+    --y: 50%;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+    min-height: 66px;
+    padding: 12px 16px;
+
+    color: var(--texto);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.03));
+    border: 1px solid var(--borda);
+    border-radius: var(--raio-botao);
+
+    transition:
+        transform 0.35s var(--curva),
+        border-color 0.3s ease,
+        box-shadow 0.35s var(--curva);
+
+    animation: entrar-botao 0.6s var(--curva) backwards;
+}
+
+/* Entrada escalonada: um botão depois do outro */
+.botao:nth-child(1) {
+    animation-delay: 0.30s;
+}
+
+.botao:nth-child(2) {
+    animation-delay: 0.40s;
+}
+
+.botao:nth-child(3) {
+    animation-delay: 0.50s;
+}
+
+/* Cor de cada marca */
+.linkedin {
+    --cor: var(--linkedin);
+}
+
+.github {
+    --cor: var(--github);
+}
+
+.whatsapp {
+    --cor: var(--whatsapp);
+}
+
+/* Luz que acompanha o mouse (posição vem do script.js) */
+.botao::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background: radial-gradient(180px circle at var(--x) var(--y),
+            color-mix(in srgb, var(--cor) 38%, transparent),
+            transparent 70%);
+
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Texto no centro, ocupa o espaço livre */
+.botao span:not(.seta):not(.icone) {
+    flex: 1;
+    text-align: left;
+}
+
+/* Ícone: caixa clara para qualquer logo aparecer bem */
+.icone,
+.icone-github {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+
+    object-fit: contain;
+
+    background: #ffffff;
+    border-radius: 12px;
+
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.30);
+
+    transition: transform 0.4s var(--curva);
+}
+
+/* Seta em círculo */
+.seta {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+
+    color: var(--texto-suave);
+    font-size: 1.05rem;
+
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+
+    transition:
+        transform 0.35s var(--curva),
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+/* ========================================
+   9. INTERAÇÕES
+======================================== */
+
+/* Só em dispositivos com mouse (evita "hover preso" no celular) */
+@media (hover: hover) {
+    .botao:hover {
+        transform: translateY(-3px);
+
+        border-color: color-mix(in srgb, var(--cor) 60%, transparent);
+        box-shadow:
+            0 16px 34px rgba(0, 0, 0, 0.38),
+            0 0 0 1px color-mix(in srgb, var(--cor) 25%, transparent);
+    }
+
+    .botao:hover::before {
+        opacity: 1;
+    }
+
+    .botao:hover .icone,
+    .botao:hover .icone-github {
+        transform: scale(1.08) rotate(-4deg);
+    }
+
+    .botao:hover .seta {
+        color: #ffffff;
+        background: var(--cor);
+        transform: translate(2px, -2px);
+    }
+
+    .img:hover,
+    .avatar:hover {
+        transform: scale(1.05);
+        box-shadow:
+            0 0 0 9px rgba(59, 130, 246, 0.16),
+            0 18px 44px rgba(59, 130, 246, 0.45);
+    }
+}
+
+/* Feedback ao clicar ou tocar */
+.botao:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+}
+
+/* Foco por teclado bem visível */
+.botao:focus-visible {
+    outline: 3px solid var(--azul-200);
+    outline-offset: 4px;
+}
+
+.botao:focus-visible::before {
+    opacity: 1;
+}
+
+/* ========================================
+   10. RODAPÉ
+======================================== */
+
+footer {
+    margin-top: 28px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--borda);
+}
+
+footer p {
+    color: var(--texto-suave);
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
+/* ========================================
+   11. ANIMAÇÕES DE ENTRADA
+======================================== */
+
+@keyframes entrar-cartao {
+    from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+    }
+}
+
+@keyframes entrar-botao {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+}
+
+/* Respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-delay: 0s !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   12. FALLBACK SEM BLUR
+======================================== */
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .container {
+        background: rgba(19, 26, 37, 0.95);
+    }
+}
+
+/* ========================================
+   13. CELULARES
+======================================== */
+
+@media (max-width: 480px) {
+    body {
+        padding: 20px 14px;
+    }
+
+    .container {
+        padding: 34px 18px 20px;
+        border-radius: 22px;
+    }
+
+    .img,
+    .avatar {
+        width: 108px;
+        height: 108px;
+    }
+
+    .botao {
+        min-height: 62px;
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+
+    .icone,
+    .icone-github {
+        width: 38px;
+        height: 38px;
+    }
+}
